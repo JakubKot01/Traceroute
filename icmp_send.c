@@ -46,9 +46,10 @@ int send_package(int sockfd, int pid, int ttl, struct sockaddr_in recipient) {
 
 int send_packages(int socket_fd, int pid, int ttl, struct sockaddr_in socket) {
     int i = 0;
-    while(i < 0) {
+    while(i < 3) {
         if(send_package(socket_fd, pid, ttl, socket) < 0)
             return EXIT_FAILURE;
+        i++;
     }
     return EXIT_SUCCESS;
 }
