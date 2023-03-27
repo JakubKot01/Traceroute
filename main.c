@@ -5,7 +5,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "traceroute.h"
+#include "icmp_send.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -25,11 +25,16 @@ int main(int argc, char* argv[]) {
     bzero(&recipient, sizeof(recipient));
 
     recipient.sin_family = AF_INET;
+    
     if(inet_pton(AF_INET, argv[1], &recipient.sin_addr) == 0) {
         printf(stderr, "Invalid IP address!\n");
         return EXIT_FAILURE;
     }
 
-    traceroute(&recipient, sockfd);
+    uint16_t id = (uint16_t)getpid();
+
+    for(int i = 0; i < 30; i++) {
+        send_packages(sockfd, id, i + 1, recipient);
+    }
     return 0;
 }
