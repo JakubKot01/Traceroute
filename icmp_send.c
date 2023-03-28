@@ -46,7 +46,7 @@ int send_package(struct sockaddr_in recipient, int sockfd, int pid, int ttl, int
 
 int send_packages(int socket_fd, int pid, int ttl, struct sockaddr_in socket) {
     for(int i = 0; i < 3; i++) {
-        if(send_package(socket, socket_fd, pid, ttl, ttl + i) < 0) {
+        if(send_package(socket, socket_fd, pid, ttl, ttl * 3 + i) < 0) {
             fprintf(stderr, "Cannot send a packet %s\n", strerror(errno));
             return EXIT_FAILURE;
         }
