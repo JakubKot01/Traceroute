@@ -1,3 +1,7 @@
+/*
+    Jakub Kot 324067
+*/
+
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
@@ -17,6 +21,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
+    //socket(int domain, int type, int protocol);
     int sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     
     if (sockfd < 0) {
@@ -26,10 +31,12 @@ int main(int argc, char* argv[]) {
 
     struct sockaddr_in recipient;
 
+    //Zerowanie sizeof(recipient) bajtów
     bzero(&recipient, sizeof(recipient));
 
     recipient.sin_family = AF_INET;
     
+    //String to numeric
     if(inet_pton(AF_INET, argv[1], &recipient.sin_addr) == 0) {
         fprintf(stderr, "Invalid IP address!\n");
         return EXIT_FAILURE;

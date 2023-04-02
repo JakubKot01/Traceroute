@@ -1,3 +1,7 @@
+/*
+    Jakub Kot 324067
+*/
+
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
@@ -36,7 +40,9 @@ void printer(int counter, int ttl, char* senders[3], uint64_t avg) {
 int receive(int sockfd, int ttl, int id, struct timeval send_time) {
 	
 	fd_set descriptors;
+    //Usuwamy wszystkie deskryptory z descriptors
 	FD_ZERO (&descriptors);
+    //Dodajemy sockfd do descriptors
 	FD_SET(sockfd, &descriptors);
 	struct timeval tv, curr_time;
 	tv.tv_sec = 1;
@@ -65,7 +71,7 @@ int receive(int sockfd, int ttl, int id, struct timeval send_time) {
 		socklen_t 			sender_len = sizeof(sender);
 		u_int8_t 			buffer[IP_MAXPACKET];
 
-		ssize_t packet_len = recvfrom (sockfd, buffer, IP_MAXPACKET, 0, (struct sockaddr*)&sender, &sender_len);
+		ssize_t packet_len = recvfrom(sockfd, buffer, IP_MAXPACKET, 0, (struct sockaddr*)&sender, &sender_len);
 	
 		if (packet_len < 0) {
 			fprintf(stderr, "recvfrom error: %s\n", strerror(errno));
@@ -75,6 +81,7 @@ int receive(int sockfd, int ttl, int id, struct timeval send_time) {
 		char sender_ip_str[20];
 
 		inet_ntop(AF_INET, &(sender.sin_addr), sender_ip_str, sizeof(sender_ip_str));
+
         senders[i] = sender_ip_str;
 
 		struct ip* 			ip_header = (struct ip*) buffer;
@@ -85,7 +92,6 @@ int receive(int sockfd, int ttl, int id, struct timeval send_time) {
         if (header->icmp_type == ICMP_ECHOREPLY) {
 
             if(header->icmp_seq == ttl * 3 + i && header->icmp_id == id) {
-                result = 1;
                 gettimeofday(&curr_time, NULL);
                 millis[i] = ((uint64_t)curr_time.tv_sec * (uint64_t)1000) + ((uint64_t)curr_time.tv_usec / 1000);
                 diff_times[i] = millis[i] - send_millis;
@@ -105,7 +111,7 @@ int receive(int sockfd, int ttl, int id, struct timeval send_time) {
                 gettimeofday(&curr_time, NULL);
                 millis[i] = ((uint64_t)curr_time.tv_sec * (uint64_t)1000) + ((uint64_t)curr_time.tv_usec / 1000);
                 diff_times[i] = millis[i] - send_millis;
-                i++;
+                ++i;
             }
         }
 	}

@@ -1,3 +1,7 @@
+/*
+    Jakub Kot 324067
+*/
+
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
@@ -10,3 +14,5 @@
 void print_as_bytes (unsigned char* buff, ssize_t length);
 
 int receive(int sockfd, int ttl, int id, struct timeval send_time);
+
+void printer(int counter, int ttl, char* senders[3], uint64_t avg);

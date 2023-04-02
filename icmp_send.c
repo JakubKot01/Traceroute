@@ -1,3 +1,7 @@
+/*
+    Jakub Kot 324067
+*/
+
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
@@ -28,7 +32,11 @@ int send_package(struct sockaddr_in recipient, int sockfd, int pid, int ttl, int
     header.checksum = 0;
     header.checksum = compute_icmp_checksum((u_int16_t*)&header, sizeof(header));
 
+    //int setsockopt(int socket, int level, int option_name,const void *option_value, socklen_t option_len);
     setsockopt(sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(int));
+
+
+    //ssize_t sendto(int socket, const void *message, size_t length, int flags, const struct sockaddr *dest_addr, socklen_t dest_len);
 
     ssize_t bytes_sent = sendto (
         sockfd, 
