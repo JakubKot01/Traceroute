@@ -40,10 +40,7 @@ void printer(int counter, int ttl, char* senders[3], uint64_t avg) {
 int receive(int sockfd, int ttl, int id, struct timeval send_time) {
 	
 	fd_set descriptors;
-    //Usuwamy wszystkie deskryptory z descriptors
-	FD_ZERO (&descriptors);
-    //Dodajemy sockfd do descriptors
-	FD_SET(sockfd, &descriptors);
+
 	struct timeval tv, curr_time;
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;

@@ -1,3 +1,3 @@
 # Traceroute
 
-Traceroute implementation for computer networks
+Traceroute implementation for Computer Networks
